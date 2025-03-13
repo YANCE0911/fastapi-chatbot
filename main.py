@@ -23,3 +23,5 @@ def chat_with_ai(request: ChatRequest):
         messages=[{"role": "user", "content": request.message}]
     )
     return {"response": response.choices[0].message.content}
+
+# 再デプロイのためのコメント追加
