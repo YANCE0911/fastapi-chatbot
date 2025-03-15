@@ -3,6 +3,22 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+# ここでCORSを許可する
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 本番はここを自分のドメインにした方が安全
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# 以下、お前がすでに書いてるコード
+
 
 # 環境変数の読み込み（.env の APIキーを取得）
 load_dotenv()
