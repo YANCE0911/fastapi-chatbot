@@ -3,9 +3,9 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
-from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+# FastAPIアプリを作成
 app = FastAPI()
 
 # ここでCORSを許可する
@@ -17,14 +17,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 以下、お前がすでに書いてるコード
-
-
 # 環境変数の読み込み（.env の APIキーを取得）
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-app = FastAPI()
+# OpenAI APIクライアントを作成（1回だけ定義して使い回す）
+client = openai.OpenAI()
 
 # ユーザーの入力を受け取るデータモデル
 class ChatRequest(BaseModel):
@@ -33,7 +31,6 @@ class ChatRequest(BaseModel):
 # ChatGPT APIを呼び出すエンドポイント（最新バージョン対応）
 @app.post("/chat")
 def chat_with_ai(request: ChatRequest):
-    client = openai.OpenAI()  # 🔥 最新の `OpenAI` クラスを使う
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",  # モデル指定（GPT-4を使う場合は "gpt-4"）
         messages=[{"role": "user", "content": request.message}]
